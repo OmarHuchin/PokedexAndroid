@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    Because the window insets on round devices are larger than 15dp, this padding only applies
+    to square screens.
+    -->
+    <dimen name="box_inset_layout_padding">0dp</dimen>
+
+    <!--
+    This padding applies to both square and round screens. The total padding between the buttons
+    and the window insets is box_inset_layout_padding (above variable) on square screens and
+    inner_frame_layout_padding (below variable) on round screens.
+    -->
+    <dimen name="inner_frame_layout_padding">5dp</dimen>
+
+    <!--region Margins/paddings-->
+    <dimen name="safe_horizontal_margin">16dp</dimen>
+    <dimen name="safe_vertical_margin">24dp</dimen>
+    <dimen name="footer_margin_bottom">20dp</dimen>
+    <dimen name="last_element_margin_bottom">50dp</dimen>
+    <dimen name="general_horizontal_margin">16dp</dimen>
+    <dimen name="general_vertical_margin">24dp</dimen>
+    <dimen name="header_top_margin">16dp</dimen>
+    <dimen name="card_horizontal_margin">16dp</dimen>
+    <dimen name="card_horizontal_padding">16dp</dimen>
+    <dimen name="barrier_margin">33dp</dimen>
+    <dimen name="long_text_padding">60dp</dimen>
+    <dimen name="vertical_space_between_elements">16dp</dimen>
+    <dimen name="vertical_space_between_elements_large">32dp</dimen>
+    <dimen name="horizontal_card_extra_margin">6dp</dimen>
+    <dimen name="margin_button_invisible">8dp</dimen>
+    <dimen name="margin_resort_image_image">250dp</dimen>
+    <dimen name="padding_5">5dp</dimen>
+    <dimen name="margin10">10dp</dimen>
+    <!--endregion-->
+
+    <!--region Buttons-->
+    <dimen name="ripple_radius">8dp</dimen>
+    <dimen name="button_radius">8dp</dimen>
+    <dimen name="button_stroke">1dp</dimen>
+    <dimen name="button_large_width">328dp</dimen>
+    <dimen name="button_medium_width">228dp</dimen>
+    <dimen name="button_small_width">100dp</dimen>
+    <dimen name="button_standard_height">48dp</dimen>
+    <dimen name="button_toggle_width">150dp</dimen>
+    <dimen name="button_invisible_width">48dp</dimen>
+    <dimen name="button_invisible_height">48dp</dimen>
+    <!--endregion-->
+
+    <!--region Extra-->
+    <dimen name="spacer_width">130dp</dimen>
+    <dimen name="spacer_height">3dp</dimen>
+    <!--endregion-->
+
+    <!--region Loader-->
+    <dimen name="loader_elevation">20dp</dimen>
+    <dimen name="loader_text_size">20sp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!--endregion-->
+</resources>

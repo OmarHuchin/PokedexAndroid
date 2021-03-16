@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--region General Styles-->
+
+    <!--  Style for the common footer element  -->
+    <style name="FooterStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginBottom">@dimen/footer_margin_bottom</item>
+    </style>
+
+    <!--  Style for Transparent action bar  -->
+    <style name="TransparentActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/primaryGray</item>
+        <item name="android:textColorPrimary">@color/primaryBlue</item>
+        <item name="colorControlNormal">@color/primaryBlue</item>
+    </style>
+
+    <!--endregion-->
+    <!--  Style for Header text  -->
+    <style name="HeaderTextStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/secondaryDarkGray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginTop">@dimen/vertical_space_between_elements</item>
+    </style>
+
+    <!--  Style for Header light text  -->
+    <style name="HeaderLightTextStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">32sp</item>
+    </style>
+
+    <!--  Style for general input outlined layouts  -->
+    <style name="LayoutTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primaryBlue</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="hintTextColor">@color/primaryBlue</item>
+        <item name="errorEnabled">true</item>
+        <item name="errorTextAppearance">@style/InfoTextAppearance</item>
+        <item name="boxStrokeErrorColor">@color/secondaryGray</item>
+        <item name="errorTextColor">@color/secondaryOrange</item>
+        <item name="helperTextTextAppearance">@style/InfoTextAppearance</item>
+        <item name="helperTextTextColor">@color/secondaryBlue</item>
+        <item name="boxCornerRadiusBottomEnd">6dp</item>
+        <item name="boxCornerRadiusBottomStart">6dp</item>
+        <item name="boxCornerRadiusTopEnd">6dp</item>
+        <item name="boxCornerRadiusTopStart">6dp</item>
+        <item name="android:textCursorDrawable">@drawable/custom_cursor</item>
+        <item name="android:colorControlActivated">@color/primaryBlue</item>
+        <item name="android:colorControlHighlight">@color/secondaryBlue</item>
+    </style>
+
+    <!--  Style for general error messages and helper text in input fields  -->
+    <style name="InfoTextAppearance" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <!--  Style for Outlined buttons  -->
+    <style name="OutlineButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@null</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:background">@drawable/custom_button_outline</item>
+        <item name="android:textColor">@color/primaryBlue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--  Style for Toggling buttons  -->
+    <style name="ToggleButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@null</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <!--  Style for Transparent buttons  -->
+    <style name="TransparentButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/primaryBlue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="NoTitleStyle">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <!--endregion-->
+</resources>

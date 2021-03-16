@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="isVisible"
+            type="boolean"/>
+
+    </data>
+    <RelativeLayout
+        android:visibility="@{isVisible ? View.VISIBLE : View.GONE}"
+        android:id="@+id/progressLogin"
+        android:elevation="@dimen/loader_elevation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_half_alpha">
+
+        <ProgressBar
+            android:id="@+id/loginProgressBar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:indeterminate="true"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/custom_progress_bar"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/textProgressLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginProgressBar"
+            android:textStyle="bold"
+            android:textSize="@dimen/loader_text_size"
+            android:layout_centerInParent="true"
+            android:text="@string/loading_text"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+
+</layout>
