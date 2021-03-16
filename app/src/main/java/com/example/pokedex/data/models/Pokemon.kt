@@ -1,6 +1,7 @@
 package com.example.pokedex.data.models
 
 import android.os.Parcelable
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class Pokemon (
@@ -8,7 +9,8 @@ data class Pokemon (
     @SerializedName("name") val name : String,
     @SerializedName("order") val order : Int,
     @SerializedName("sprites") val sprites : Sprites?,
-    @SerializedName("weight") val weight : Int
+    @SerializedName("weight") val weight : Int,
+    @Expose val url: String
     )
 data class Sprites (
     @SerializedName("back_default") val back_default : String,

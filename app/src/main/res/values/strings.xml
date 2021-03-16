@@ -22,9 +22,12 @@
     <string name="message_error_general">The action could not be completed</string>
     <string name="loading_text">Cargando...</string>
 
-    <string name="button_onboarding">Continue</string>
-    <string name="button_skip">Skip</string>
-    <string name="button_accept">Accept</string>
+
+
+    <string name="button_accept">Aceptar</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="close_session_message">¿Deseas cerrar sesión?</string>
+    <string name="close_session_title">Atención</string>
     <string name="title_alert_error">There\'s been a problem&#8230;</string>
 
     <!-- Home Region -->

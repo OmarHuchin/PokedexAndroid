@@ -14,13 +14,15 @@ import com.example.pokedex.utils.addToDisposables
 import com.example.pokedex.viewmodels.BaseVM
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.internal.observers.BlockingObserver
+import io.reactivex.internal.operators.observable.BlockingObservableIterable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import kotlin.collections.ArrayList
 
 class PokedexViewModel(app: Application): BaseVM<HomeErrorCodes>(app) {
-    var offset = 0;
-    var limit = 20;
+    var offset = 0
+    var limit = 20
     val pokemonResult: MutableLiveData<PokemonResult> by lazy {
         MutableLiveData<PokemonResult>()
     }
@@ -42,8 +44,8 @@ class PokedexViewModel(app: Application): BaseVM<HomeErrorCodes>(app) {
                 { r-> run {
 
                     r.results.map {
-                        Pokemon(0,"",
-                            0, null,0)
+                        Pokemon(0,it.name,
+                            0, null,0,it.url)
                     }.also { p->
                         if (url.isNullOrEmpty()) {
                             pokemonResult.value = r
@@ -75,22 +77,38 @@ class PokedexViewModel(app: Application): BaseVM<HomeErrorCodes>(app) {
 
         if (pokemonResult.value?.results.isNullOrEmpty()) return
         val result = pokemonResult.value!!.results
-        val r = result.filter { !it.url.isNullOrEmpty() }.map {
-            repository.getPokemon(it.url ?: "")
-        }
-        r.forEach {
-            it.subscribeOn(Schedulers.io())
+        val observables = repository.getPokemons(result.map { it.url })
+
+        Observable.fromIterable(observables)
+                .flatMap { it.subscribeOn(Schedulers.io()) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe ({
-                    r-> run {
-                        val index = result.indexOfFirst { it.name == r.name }
-                        currentPokemonList.value!![index] = r
-                        handleSuccessCall(Pair(index,r))
+                .subscribe({ p ->
+                    run {
+                        val index = currentPokemonList.value?.indexOfFirst { it.name == p.name } ?: return@run
+                        if (index < 0) return@run
+                        val list = ArrayList(currentPokemonList.value)
+                        list[index] = p
+                        currentPokemonList.value = list
                         isLoadingMore.set(false)
                     }
-                    }, ::handleErrorCall)
+                }, ::handleErrorCall)
                 .addToDisposables(compositeDisposable)
-        }
+        /* .subscribeOn(Schedulers.io())
+        *   Observable.concat(observables)
+                .subscribeOn(Schedulers.io())
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ p ->
+                    run {
+
+                        currentPokemonList.value = ArrayList(p)
+
+                        isLoadingMore.set(false)
+                    }
+                }, ::handleErrorCall)
+                .addToDisposables(compositeDisposable)
+        * */
+
     }
     fun loadMore(){
         if(isLoadingMore.get() == true) return

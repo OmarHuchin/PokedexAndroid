@@ -11,13 +11,13 @@ import com.example.pokedex.viewmodels.BaseVM
 
 class ProfileViewModel(app: Application):BaseVM<ProfileErrorCodes>(app) {
     val profile: MutableLiveData<Profile> by lazy {
-        MutableLiveData()
+        MutableLiveData(repository.getProfile())
     }
     var userName: LiveData<String> = Transformations.map(profile){
         it.nickName
     }
     override fun firstRepositoryCallDefinition() {
-        TODO("Not yet implemented")
+
     }
 
     override fun secondRepositoryCallDefinition() {
@@ -29,5 +29,10 @@ class ProfileViewModel(app: Application):BaseVM<ProfileErrorCodes>(app) {
     override fun onException(error: Throwable) {
         TODO("Not yet implemented")
     }
-
+    fun promptLogout(){
+        handleSuccessCall("")
+    }
+    fun logout(){
+        repository.deleteProfile()
+    }
 }
