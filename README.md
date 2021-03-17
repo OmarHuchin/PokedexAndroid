@@ -15,7 +15,11 @@ Compilar
 - Ingresar credenciales 
 user: androiddeveloper@gmail.com contraseña: dev2021
 
-
+# Novedades
+- Se usa DataBinding, ViewModels, LiveData, Navigation Components
+- Scroll infinito
+## Arquitectura usada
+- MVVM
 ## Librerías usadas
 | Librería |
 | ------ |
