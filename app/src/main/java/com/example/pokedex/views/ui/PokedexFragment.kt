@@ -19,6 +19,7 @@ import com.example.pokedex.databinding.FragmentPokedexBinding
 import com.example.pokedex.libraries.EndlessRecyclerOnScrollListener
 
 import com.example.pokedex.utils.HomeErrorCodes
+import com.example.pokedex.utils.NetworkMonitorUtil
 import com.example.pokedex.utils.observe
 import com.example.pokedex.views.adapters.PokemonListAdapter
 
@@ -28,6 +29,7 @@ import com.example.pokedex.views.adapters.PokemonListAdapter
  * create an instance of this fragment.
  */
 class PokedexFragment : Fragment() {
+    private lateinit var networkMonitor: NetworkMonitorUtil
     private lateinit var viewModel: PokedexViewModel
     private lateinit var binding: FragmentPokedexBinding
     private lateinit var adapter: PokemonListAdapter
@@ -37,13 +39,16 @@ class PokedexFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         viewModel = ViewModelProvider(this).get(PokedexViewModel::class.java)
+
         binding = FragmentPokedexBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        networkMonitor  = NetworkMonitorUtil(requireContext())
         setUpUI()
         setListeners()
         return binding.root
     }
+
     private fun performRepositoryCall(view: View? = null){
         if (view != null) {
             (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
@@ -52,7 +57,14 @@ class PokedexFragment : Fragment() {
         viewModel.performRepositoryCall()
     }
     fun setUpUI() {
-        adapter = PokemonListAdapter {  }
+        adapter = PokemonListAdapter {
+            val p = it
+            if (p.id == 0) return@PokemonListAdapter
+            viewLifecycleOwner.run{
+               val action = PokedexFragmentDirections.actionPokedexFragmentToPokemonDetailFragment(p.id)
+                view?.findNavController()?.navigate(action)
+            }
+        }
         //val manager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
         //binding.pokemonsRecyclerView.layoutManager = manager
         binding.pokemonsRecyclerView.adapter = adapter
@@ -78,10 +90,13 @@ class PokedexFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        viewLifecycleOwner.run {
-            performRepositoryCall()
-        }
+        networkMonitor.register()
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        networkMonitor.unregister()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -101,6 +116,12 @@ class PokedexFragment : Fragment() {
         binding.iconProfile.setOnClickListener {
             viewLifecycleOwner.run{
                 view.findNavController().navigate(R.id.action_pokedexFragment_to_profileFragment)
+            }
+        }
+        networkMonitor.result = {
+            isAvailable, type ->
+            viewLifecycleOwner.run {
+                viewModel.loadData(isAvailable)
             }
         }
     }

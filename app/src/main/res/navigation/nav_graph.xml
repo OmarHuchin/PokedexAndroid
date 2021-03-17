@@ -12,6 +12,16 @@
         <action
             android:id="@+id/action_pokedexFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_pokedexFragment_to_pokemonDetailFragment"
+            app:destination="@id/pokemonDetailFragment"
+            >
+            <argument
+                android:name="id"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -21,5 +31,14 @@
         <action
             android:id="@+id/action_profileFragment_to_pokedexFragment"
             app:destination="@id/pokedexFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pokemonDetailFragment"
+        android:name="com.example.pokedex.views.ui.PokemonDetailFragment"
+        android:label="PokemonDetailFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

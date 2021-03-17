@@ -17,12 +17,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.internal.observers.BlockingObserver
 import io.reactivex.internal.operators.observable.BlockingObservableIterable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
 class PokedexViewModel(app: Application): BaseVM<HomeErrorCodes>(app) {
     var offset = 0
     var limit = 20
+    var isLoadFromServer: Boolean = false
     val pokemonResult: MutableLiveData<PokemonResult> by lazy {
         MutableLiveData<PokemonResult>()
     }
@@ -33,8 +37,23 @@ class PokedexViewModel(app: Application): BaseVM<HomeErrorCodes>(app) {
         ObservableField()
     }
     override fun firstRepositoryCallDefinition() {
+    }
+    fun loadData(fromServer:Boolean){
+        this.isLoadFromServer = fromServer
+        if (isBusy.get() == true) return
         isBusy.set(true)
-        load()
+        if (fromServer){
+            load()
+        }else{
+            GlobalScope.launch {
+                loadFromLocal()
+            }
+        }
+    }
+    private suspend fun loadFromLocal(){
+        val list = repository.readPokemoList()
+        currentPokemonList.postValue(ArrayList(list))
+        isBusy.set(false)
     }
     private fun load(url: String = ""){
         getPokemonList(url)
@@ -45,7 +64,7 @@ class PokedexViewModel(app: Application): BaseVM<HomeErrorCodes>(app) {
 
                     r.results.map {
                         Pokemon(0,it.name,
-                            0, null,0,it.url)
+                            0, null,0,it.url, "","")
                     }.also { p->
                         if (url.isNullOrEmpty()) {
                             pokemonResult.value = r
@@ -74,44 +93,40 @@ class PokedexViewModel(app: Application): BaseVM<HomeErrorCodes>(app) {
 
     override fun areValidFields(): Boolean = true
     override fun secondRepositoryCallDefinition() {
-
-        if (pokemonResult.value?.results.isNullOrEmpty()) return
+        if (pokemonResult.value?.results.isNullOrEmpty() || isLoadingMore.get() == true) return
         val result = pokemonResult.value!!.results
         val observables = repository.getPokemons(result.map { it.url })
-
+        var iteration: Int = 0
         Observable.fromIterable(observables)
                 .flatMap { it.subscribeOn(Schedulers.io()) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ p ->
                     run {
                         val index = currentPokemonList.value?.indexOfFirst { it.name == p.name } ?: return@run
+                        p.url = repository.getPokemonDetail(p.id)
+                        p.coverImage = repository.getPokemonCoverImage(p.id)
+                        p.frontImage = p.sprites?.front_default ?: ""
                         if (index < 0) return@run
+                        iteration += 1
                         val list = ArrayList(currentPokemonList.value)
                         list[index] = p
                         currentPokemonList.value = list
-                        isLoadingMore.set(false)
+                        save(list)
+                        if (iteration >= (list.size - 1))
+                        {
+                            isLoadingMore.set(false)
+                        }
                     }
                 }, ::handleErrorCall)
                 .addToDisposables(compositeDisposable)
-        /* .subscribeOn(Schedulers.io())
-        *   Observable.concat(observables)
-                .subscribeOn(Schedulers.io())
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ p ->
-                    run {
-
-                        currentPokemonList.value = ArrayList(p)
-
-                        isLoadingMore.set(false)
-                    }
-                }, ::handleErrorCall)
-                .addToDisposables(compositeDisposable)
-        * */
-
+    }
+    fun save(pokemons:List<Pokemon>){
+        GlobalScope.launch {
+            repository.insertPokemonList(pokemons)
+        }
     }
     fun loadMore(){
-        if(isLoadingMore.get() == true) return
+        if(isLoadingMore.get() == true || !isLoadFromServer) return
         isLoadingMore.set(true)
         val nextFetch = pokemonResult.value?.next ?: return
         load(nextFetch)

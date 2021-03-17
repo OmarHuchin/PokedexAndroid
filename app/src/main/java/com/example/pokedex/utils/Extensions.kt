@@ -7,6 +7,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokedex.data.local.database.entities.PokemonEntity
+import com.example.pokedex.data.models.Pokemon
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlin.properties.Delegates
@@ -68,4 +70,24 @@ fun <VH: RecyclerView.ViewHolder,T> RecyclerView.Adapter<VH>.basicDiffUtil(initi
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = areContentsTheSame(old[oldItemPosition],new[newItemPosition])
     }).dispatchUpdatesTo(this)
+}
+
+fun Pokemon.toPokemonEntity(): PokemonEntity{
+    val p = this
+    return PokemonEntity().apply {
+        coverImage = p.coverImage
+        frontImage = p.frontImage
+        id = p.id.toLong()
+        name = p.name
+        order = p.order
+        url = p.url
+        weight = p.weight
+    }
+}
+fun PokemonEntity.toPokemon(): Pokemon{
+    val p = this
+    return Pokemon(p.id.toInt(),p.name.safeValue(),p.order,null,p.weight,p.url.safeValue(),p.coverImage.safeValue(),p.frontImage.safeValue())
+}
+fun String?.safeValue():String{
+    return  this ?: ""
 }

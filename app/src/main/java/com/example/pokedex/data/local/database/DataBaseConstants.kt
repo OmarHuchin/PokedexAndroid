@@ -9,7 +9,10 @@ class DataBaseConstants {
 
         const val COLUMN_ID = "id"
         const val COLUMN_NAME = "name"
-        const val COLUMN_DESCRIPTION = "url"
+        const val COLUMN_ORDER = "order"
+        const val COLUMN_WEIGHT = "weight"
+        const val COLUMN_URL = "url"
         const val COLUMN_IMAGE = "image"
+        const val COLUMN_FRONT_IMAGE = "front_image"
     }
 }
