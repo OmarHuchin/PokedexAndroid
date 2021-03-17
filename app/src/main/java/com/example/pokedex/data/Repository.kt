@@ -43,7 +43,7 @@ class Repository(val context:Context) {
             })
                 .delay(5,TimeUnit.SECONDS)
         }
-        return Observable.error<Profile>(Exception("Invalid user"))
+        return Observable.error<Profile>(Exception("Usuario no valido"))
     }
     fun getProfile():Profile{
         return preferencesManager.currentUser

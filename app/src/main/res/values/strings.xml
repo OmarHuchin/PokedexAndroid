@@ -26,7 +26,7 @@
     <string name="button_cancel">Cancelar</string>
     <string name="close_session_message">¿Deseas cerrar sesión?</string>
     <string name="close_session_title">Atención</string>
-    <string name="title_alert_error">Existe un problea&#8230;</string>
+    <string name="title_alert_error">Existe un problema!</string>
 
     <!-- Home Region -->
     <string name="pokemons_are_not_avaialables">No se encontraron pokemones</string>
