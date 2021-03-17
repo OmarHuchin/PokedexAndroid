@@ -6,6 +6,7 @@ import com.example.pokedex.R
 import com.example.pokedex.data.models.Profile
 import com.example.pokedex.utils.LoginErrorCodes
 import com.example.pokedex.utils.addToDisposables
+import com.example.pokedex.utils.isValidEmail
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ class LoginVM(application: Application) : BaseVM<LoginErrorCodes>(application) {
         MutableLiveData<String>()
     }
     private val isUserNameValid: LiveData<Boolean> = Transformations.map(userName) {
-        !it.isNullOrEmpty()
+        it.isValidEmail()
     }
     private val isPasswordValid: LiveData<Boolean> = Transformations.map(password) {
         !it.isNullOrEmpty()
@@ -44,7 +45,7 @@ class LoginVM(application: Application) : BaseVM<LoginErrorCodes>(application) {
     }
     override fun areValidFields(): Boolean {
         var isValid = true
-        if (userName.value.isNullOrEmpty()){
+        if (userName.value.isNullOrEmpty() || !userName.value.isValidEmail()){
             isValid = false
         }
         if(password.value.isNullOrEmpty()){

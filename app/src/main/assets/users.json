@@ -3,5 +3,10 @@
         "nickName": "Omar",
         "email":"zerokhr@gmail.com",
         "password":"omar2021"
+    },
+    {
+        "nickName": "Android Developer",
+        "email":"androiddeveloper@gmail.com",
+        "password":"dev2021"
     }
 ]

@@ -25,7 +25,9 @@ class LoginActivity :BaseCompactActivity<ActivityLoginBinding,LoginErrorCodes,Lo
 
     }
     override fun setListeners() {
-
+        binding.loginBtn.setOnClickListener {
+            performRepositoryCall(it)
+        }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

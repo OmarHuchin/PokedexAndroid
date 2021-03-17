@@ -41,7 +41,7 @@
                     android:id="@+id/button_positive"
                     android:layout_width="@dimen/button_large_width"
                     android:layout_height="@dimen/button_standard_height"
-
+                    android:minHeight="@dimen/button_standard_height"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginBottom="16dp"
                     android:layout_gravity="center"

@@ -3,6 +3,8 @@ package com.example.pokedex.utils
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
+import android.util.Patterns
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
@@ -13,6 +15,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlin.properties.Delegates
 import androidx.lifecycle.Observer as LifeCycleObserver
+
+
 /**
  * Start activity from context with extras
  */
@@ -58,17 +62,17 @@ fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, removeOldObse
     liveData.observe(this, LifeCycleObserver(body))
 }
 
-fun <VH: RecyclerView.ViewHolder,T> RecyclerView.Adapter<VH>.basicDiffUtil(initialValue:List<T>,
-                                                                           areItemsTheSame:(T,T)->Boolean = {o,n-> o==n},
-                                                                           areContentsTheSame: (T,T)->Boolean= {o,n-> o==n})= Delegates.observable(
-    initialValue){ _, old,new ->
-    DiffUtil.calculateDiff(object :DiffUtil.Callback(){
+fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffUtil(initialValue: List<T>,
+                                                                             areItemsTheSame: (T, T) -> Boolean = { o, n -> o == n },
+                                                                             areContentsTheSame: (T, T) -> Boolean = { o, n -> o == n })= Delegates.observable(
+        initialValue){ _, old, new ->
+    DiffUtil.calculateDiff(object : DiffUtil.Callback() {
         override fun getOldListSize(): Int = old.size
 
         override fun getNewListSize(): Int = new.size
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean  = areItemsTheSame(old[oldItemPosition],new[newItemPosition])
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = areItemsTheSame(old[oldItemPosition], new[newItemPosition])
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = areContentsTheSame(old[oldItemPosition],new[newItemPosition])
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = areContentsTheSame(old[oldItemPosition], new[newItemPosition])
     }).dispatchUpdatesTo(this)
 }
 
@@ -86,8 +90,12 @@ fun Pokemon.toPokemonEntity(): PokemonEntity{
 }
 fun PokemonEntity.toPokemon(): Pokemon{
     val p = this
-    return Pokemon(p.id.toInt(),p.name.safeValue(),p.order,null,p.weight,p.url.safeValue(),p.coverImage.safeValue(),p.frontImage.safeValue())
+    return Pokemon(p.id.toInt(), p.name.safeValue(), p.order, null, p.weight, p.url.safeValue(), p.coverImage.safeValue(), p.frontImage.safeValue())
 }
 fun String?.safeValue():String{
     return  this ?: ""
+}
+fun String?.isValidEmail():Boolean {
+    val charSequence: CharSequence = this ?: ""
+    return !TextUtils.isEmpty(charSequence) && Patterns.EMAIL_ADDRESS.matcher(charSequence).matches()
 }

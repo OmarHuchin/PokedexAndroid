@@ -3,6 +3,8 @@ package com.example.pokedex
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
@@ -90,6 +92,16 @@ abstract class BaseCompactActivity<BindType: ViewDataBinding,ErrorType, VMType: 
         viewModel.errorOnInput().observe(this,  { errors ->
             onValidationError(errors)
         })
+    }
+    /**
+     * Sets the listeners for clearing the errors if the focus is lost
+     */
+    protected fun performRepositoryCall(view: View? = null){
+        if (view != null) {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                    .hideSoftInputFromWindow(view.windowToken, 0)
+        }
+        viewModel.performRepositoryCall()
     }
     /**
      * Evaluates [DataErrorCodes] and [HttpException] and Creates and Show an [AlertDialog]

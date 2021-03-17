@@ -121,7 +121,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/safe_horizontal_margin"
                         android:text="@string/btn_login"
-                        android:onClick="@{()-> viewModel.login()}"
                         app:layout_constraintTop_toBottomOf="@id/user_password">
 
                     </com.google.android.material.button.MaterialButton>
